@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: api documentation of api cm.demo.domeni.security.demo
+  description: documentation of api cm.demo.domeni.security.demo
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+  /user:
+    post:
+      tags:
+        - User
+      summary: register user
+      description: register user
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+    get:
+      tags:
+        - User
+      summary: get all users
+      description: get all users
+      operationId: getAllUsers
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+components:
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userName:
+          type: string
+        password:
+          type: string
+
