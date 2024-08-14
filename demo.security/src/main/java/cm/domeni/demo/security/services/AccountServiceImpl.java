@@ -4,6 +4,7 @@ import cm.domeni.demo.security.entities.AppRole;
 import cm.domeni.demo.security.repositories.AppRoleSpringRepository;
 import cm.domeni.demo.security.repositories.AppUserSpringRepository;
 import cm.domeni.demo.security.entities.AppUser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,14 +15,18 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
     private final AppRoleSpringRepository appRoleSpringRepository;
     private final AppUserSpringRepository appUserSpringRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AccountServiceImpl(AppRoleSpringRepository appRoleSpringRepository, AppUserSpringRepository appUserSpringRepository) {
+    public AccountServiceImpl(AppRoleSpringRepository appRoleSpringRepository, AppUserSpringRepository appUserSpringRepository, PasswordEncoder passwordEncoder) {
         this.appRoleSpringRepository = appRoleSpringRepository;
         this.appUserSpringRepository = appUserSpringRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public AppUser addNewUser(AppUser appUser) {
+        String pw = appUser.getPassword();
+        appUser.setPassword(passwordEncoder.encode(pw));
         return appUserSpringRepository.save(appUser);
     }
 
@@ -43,7 +48,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AppUser> listUsers() {
-        System.out.printf("**********  AccountServiceImpl ****************");
         return appUserSpringRepository.findAll();
     }
 }
