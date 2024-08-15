@@ -21,7 +21,7 @@ public class AccountRestController {
     }
     @GetMapping(path = "/users")
     public List<AppUser> getListOfUsers(){
-        System.out.printf("**********  AccountServiceImpl ****************");
+        System.out.print("**********  AccountServiceImpl ****************");
         return accountService.listUsers();
     }
     @PostMapping(path = "/users")
