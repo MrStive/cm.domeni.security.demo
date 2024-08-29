@@ -1,11 +1,18 @@
 spring:
   datasource:
-    url: "jdbc:postgresql://localhost:5432/security_db"
-    username: "postgres"
-    password: "domenisteve@gmail.com"
-    driver-class-name: "org.postgresql.Driver"
+    url: "jdbc:h2:mem:security_db"
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
+logging:
+  level:
+    org:
+      springframework:
+        security=DEBUG:
+domeni:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:mySecret1234}
+      expiration-time: ${JWT_EXPIRATION-TIME:300000}
