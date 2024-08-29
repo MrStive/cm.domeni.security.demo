@@ -1,46 +1,41 @@
 package cm.domeni.demo.security.web;
 
-import cm.domeni.demo.security.entities.AppRole;
-import cm.domeni.demo.security.entities.AppUser;
 import cm.domeni.demo.security.services.AccountService;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import cm.domeni.demo.security.services.JwtService;
+import cm.domeni.security.demo.api.UserApi;
+import cm.domeni.security.demo.model.CreateUserDTO;
+import cm.domeni.security.demo.model.LoginDTO;
+import cm.domeni.security.demo.model.UserDTO;
+import static org.springframework.http.HttpStatus.CREATED;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-public class AccountRestController {
+public class AccountRestController implements UserApi {
     private final AccountService accountService;
+    private final JwtService jwtService;
 
-    public AccountRestController(AccountService accountService) {
+    public AccountRestController(AccountService accountService, JwtService jwtService) {
         this.accountService = accountService;
-    }
-    @GetMapping(path = "/users")
-    public List<AppUser> getListOfUsers(){
-        System.out.printf("**********  AccountServiceImpl ****************");
-        return accountService.listUsers();
-    }
-    @PostMapping(path = "/users")
-    public AppUser saveUser(@RequestParam AppUser appUser){
-        return accountService.addNewUser(appUser);
-    }
-    @PostMapping(path = "/roles")
-    public AppRole saveRole(@RequestParam AppRole appRole){
-        return accountService.addNewRole(appRole);
-    }
-    @PostMapping(path = "/addRolesToUser")
-    public void addRolesToUser(@RequestParam RoleUserForm roleUserForm){
-        accountService.addRoleToUser(roleUserForm.getRoleName(), roleUserForm.getRoleName());
+        this.jwtService = jwtService;
     }
 
-}
-@Getter
-@Setter
-class RoleUserForm {
-    private String userName;
-    private String roleName;
+    @Override
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(accountService.listUsers());
+    }
+
+    @Override
+    public ResponseEntity<String> login(LoginDTO loginDTO) {
+        return ResponseEntity.ok(jwtService.generateToken(User.builder().username(loginDTO.getUsername()).password(loginDTO.getPassword()).build()));
+    }
+
+    @Override
+    public ResponseEntity<UUID> registerUser(CreateUserDTO userDTO) {
+        return ResponseEntity.status(CREATED).body(accountService.createUser(userDTO));
+    }
 }

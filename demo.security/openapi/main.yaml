@@ -17,7 +17,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/CreateUserDTO'
+        required: true
       responses:
         200:
           description: successful operation
@@ -40,6 +41,25 @@ paths:
               schema:
                 items:
                   $ref: '#/components/schemas/UserDTO'
+  /auth/login:
+    post:
+      tags:
+        - User
+      summary: login user
+      description: login user
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
 components:
   schemas:
     UserDTO:
@@ -50,6 +70,37 @@ components:
           format: uuid
         userName:
           type: string
-        password:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDTO'
+    CreateUserDTO:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            password:
+              type: string
+              description: password of user to create
+            userName:
+              type: string
+            roles:
+              type: array
+              items:
+                $ref: '#/components/schemas/RoleDTO'
+    LoginDTO:
+          type: object
+          properties:
+            username:
+              type: string
+            roles:
+              type: array
+              items:
+                format: string
+            password:
+              type: string
+    RoleDTO:
+      properties:
+        name:
           type: string
-
