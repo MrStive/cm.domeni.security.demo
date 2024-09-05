@@ -31,7 +31,9 @@ public class AccountRestController implements UserApi {
 
     @Override
     public ResponseEntity<String> login(LoginDTO loginDTO) {
-        return ResponseEntity.ok(jwtService.generateToken(User.builder().username(loginDTO.getUsername()).password(loginDTO.getPassword()).build()));
+        return ResponseEntity.ok(jwtService.generateToken(
+                User.builder().username(loginDTO.getUsername()).password(loginDTO.getPassword()).build())
+        );
     }
 
     @Override
