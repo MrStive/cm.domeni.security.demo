@@ -11,6 +11,7 @@ import cm.domeni.security.demo.model.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,11 @@ public class AccountServiceImpl implements AccountService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public AccountServiceImpl(AppRoleSpringRepository appRoleSpringRepository, AppUserSpringRepository appUserSpringRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public AccountServiceImpl(AppRoleSpringRepository appRoleSpringRepository,
+                              AppUserSpringRepository appUserSpringRepository,
+                              UserMapper userMapper,
+                              PasswordEncoder passwordEncoder
+    ) {
         this.appRoleSpringRepository = appRoleSpringRepository;
         this.appUserSpringRepository = appUserSpringRepository;
         this.userMapper = userMapper;
@@ -63,8 +68,12 @@ public class AccountServiceImpl implements AccountService {
                         .password(userDTO.getPassword())
                         .build()
         );
-        List<AppRole> appRoleStream = userDTO.getRoles().stream().map(RoleDTO::getName).map(s -> AppRole.builder().build()).toList();
-        appRoleSpringRepository.saveAll(appRoleStream);
+        appRoleSpringRepository.saveAll(userDTO
+                .getRoles()
+                .stream()
+                .map(RoleDTO::getName)
+                .map(s -> AppRole.builder().build())
+                .toList());
         return UUID.fromString(save.getId());
     }
 }

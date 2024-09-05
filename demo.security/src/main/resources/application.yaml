@@ -10,9 +10,9 @@ logging:
   level:
     org:
       springframework:
-        security=DEBUG:
+        security=TRACE:
 domeni:
   security:
     jwt:
-      secret-key: ${JWT_SECRET_KEY:mySecret1234}
+      secret-key: ${JWT_SECRET_KEY:mySecretKeysForGeneratedToken1234567890}
       expiration-time: ${JWT_EXPIRATION-TIME:300000}
