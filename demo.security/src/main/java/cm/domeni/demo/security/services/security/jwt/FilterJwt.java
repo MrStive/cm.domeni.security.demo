@@ -1,6 +1,6 @@
-package cm.domeni.demo.security.services.BeansDemoSecurity.filter;
+package cm.domeni.demo.security.services.security.jwt;
 
-import cm.domeni.demo.security.services.JwtServiceImpl;
+import cm.domeni.demo.security.services.security.JwtImpl;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,29 +20,32 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 public class FilterJwt implements Filter {
-    private final JwtServiceImpl jwtAuthenticationFilter;
+    private final JwtImpl jwtAuthenticationFilter;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String tokenJwt = request.getHeader("Authorization");
         if (Objects.nonNull(tokenJwt) && tokenJwt.startsWith("Bearer ")) {
             String tokens = tokenJwt.substring(7);
             try {
-                if (this.jwtAuthenticationFilter.verifySignatureOfToken(tokens) && this.jwtAuthenticationFilter.isTokenExpired(tokens)) {
+                if (this.jwtAuthenticationFilter.verifySignatureOfToken(tokens)
+                        && this.jwtAuthenticationFilter.isTokenExpired(tokens)) {
                     UserDetails userDetails = this.jwtAuthenticationFilter.getUsers(tokens);
-                   UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                           userDetails,
-                           null,
-                           userDetails.getAuthorities()
-                   );
-                   authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                   SecurityContextHolder.getContext().setAuthentication(authToken);
-                   chain.doFilter(request, response);
-               }else {
-                   chain.doFilter(request, response);
-               }
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    chain.doFilter(request, response);
+                } else {
+                    chain.doFilter(request, response);
+                }
             } catch (AuthenticationException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 chain.doFilter(request, response);

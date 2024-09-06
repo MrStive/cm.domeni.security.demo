@@ -1,4 +1,4 @@
-package cm.domeni.demo.security.services;
+package cm.domeni.demo.security.services.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;

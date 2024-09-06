@@ -4,6 +4,7 @@ import cm.domeni.demo.security.entities.AppRole;
 import cm.domeni.demo.security.entities.AppUser;
 import cm.domeni.security.demo.model.CreateUserDTO;
 import cm.domeni.security.demo.model.UserDTO;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,4 +15,5 @@ public interface AccountService {
     void addRoleToUser(String username, String roleName);
     List<UserDTO> listUsers();
     UUID createUser(CreateUserDTO userDTO);
+    UserDetailsService userDetailsService();
 }
