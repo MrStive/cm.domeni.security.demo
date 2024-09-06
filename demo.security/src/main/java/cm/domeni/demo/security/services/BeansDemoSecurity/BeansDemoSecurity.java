@@ -17,10 +17,9 @@ public class BeansDemoSecurity {
     @Bean
     public AccountService accountService(AppRoleSpringRepository appRoleSpringRepository,
                                          AppUserSpringRepository appUserSpringRepository,
-                                         PasswordEncoder passwordEncoder,
                                          UserMapper  userMapper,
                                          UserRepository userRepository) {
-        return new AccountServiceImpl(appRoleSpringRepository, appUserSpringRepository,userRepository, userMapper, passwordEncoder);
+        return new AccountServiceImpl(appRoleSpringRepository, appUserSpringRepository,userRepository, userMapper);
 
     }  @Bean
     public UserRepository userRepository(AppUserSpringRepository appUserSpringRepository, AppRoleSpringRepository appRoleSpringRepository) {
