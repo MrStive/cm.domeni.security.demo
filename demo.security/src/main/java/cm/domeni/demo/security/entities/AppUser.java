@@ -19,6 +19,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Entity
 @Table(name = "t_user")
@@ -37,17 +38,21 @@ public class AppUser {
     @Column(name = "c_password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, targetEntity = AppRole.class)
     @JoinTable(
             name = "t_user_role",
             joinColumns = @JoinColumn(name = "c_role", referencedColumnName = "c_id"),
             inverseJoinColumns = @JoinColumn(name = "c_user", referencedColumnName = "c_id")
     )
-    @Builder.Default
     private Collection<AppRole> appRoles = new ArrayList<>();
-    public void assignRole(String roleName) {
-        this.appRoles.stream().filter(appRole -> appRole.hasTheRole(roleName)).findFirst().ifPresent(
-                appRole -> appRole.setRoleName(roleName)
-        );
+    public void assignRole(String roleName, UserRepository userRepository) {
+        boolean newScope = this.appRoles.stream()
+                .anyMatch(Predicate.not(appRole -> appRole.hasTheRole(roleName)));
+        if (!newScope) {
+            AppRole role = AppRole.builder().roleName(roleName).build();
+            this.appRoles.add(userRepository.save(role));
+            userRepository.save(this);
+        }
+
     }
 }

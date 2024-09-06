@@ -1,7 +1,7 @@
-package cm.domeni.demo.security.web;
+package cm.domeni.demo.security.api;
 
 import cm.domeni.demo.security.services.AccountService;
-import cm.domeni.demo.security.services.JwtService;
+import cm.domeni.demo.security.services.security.jwt.JwtService;
 import cm.domeni.security.demo.api.UserApi;
 import cm.domeni.security.demo.model.CreateUserDTO;
 import cm.domeni.security.demo.model.LoginDTO;

@@ -1,6 +1,7 @@
-package cm.domeni.demo.security.services;
+package cm.domeni.demo.security.services.security;
 
 import cm.domeni.demo.security.entities.AppUser;
+import cm.domeni.demo.security.services.security.jwt.JwtService;
 import cm.domeni.demo.security.repositories.AppUserSpringRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class JwtServiceImpl implements JwtService {
+public class JwtImpl implements JwtService {
     @Value("${domeni.security.jwt.secret-key}")
     private String secretKey;
     @Value("${domeni.security.jwt.expiration-time}")
@@ -68,7 +69,6 @@ public class JwtServiceImpl implements JwtService {
         String username = extractUsername(token);
         AppUser appUser = appUserSpringRepository.findByUserName(username)
                 .orElseThrow();
-
         return User.builder().username(username)
                 .password(appUser.getPassword())
                 .authorities(
