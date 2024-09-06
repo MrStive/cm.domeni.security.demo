@@ -3,6 +3,7 @@ package cm.domeni.demo.security.api;
 import cm.domeni.demo.security.services.AccountService;
 import cm.domeni.demo.security.services.security.jwt.JwtService;
 import cm.domeni.security.demo.api.UserApi;
+import cm.domeni.security.demo.model.AssignRolesDTO;
 import cm.domeni.security.demo.model.CreateUserDTO;
 import cm.domeni.security.demo.model.LoginDTO;
 import cm.domeni.security.demo.model.UserDTO;
@@ -22,6 +23,12 @@ public class AccountRestController implements UserApi {
     public AccountRestController(AccountService accountService, JwtService jwtService) {
         this.accountService = accountService;
         this.jwtService = jwtService;
+    }
+
+    @Override
+    public ResponseEntity<Void> assignANewRole(AssignRolesDTO assignRolesDTO) {
+        accountService.addRoleToUser(assignRolesDTO);
+        return ResponseEntity.accepted().build();
     }
 
     @Override

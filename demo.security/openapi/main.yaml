@@ -60,6 +60,21 @@ paths:
             application/json:
               schema:
                 type: string
+  /user/assign-new-role:
+    put:
+      tags:
+        - User
+      summary: assign new role
+      description: assign a new role to a user
+      operationId: assignANewRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRolesDTO'
+      responses:
+        201:
+          description: successful operation
 components:
   schemas:
     UserDTO:
@@ -100,6 +115,18 @@ components:
                 format: string
             password:
               type: string
+    AssignRolesDTO:
+      required:
+        - roleName
+        - userId
+      properties:
+        roleName:
+          type: string
+          description: name of role
+        userId:
+          type: string
+          format: uuid
+          description: This is the user ID, so we want to assign them a new role.
     RoleDTO:
       properties:
         name:
