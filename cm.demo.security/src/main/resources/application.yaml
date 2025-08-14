@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/security_db"
+    username: "postgres"
+    password: "domenisteve@gmail.com"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+logging:
+  level:
+    org:
+      springframework:
+        security=TRACE:
+domeni:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:mySecretKeysForGeneratedToken1234567890}
+      expiration-time: ${JWT_EXPIRATION-TIME:300000}
