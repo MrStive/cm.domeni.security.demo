@@ -8,11 +8,17 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+           issuer-uri: ${ISSUER-URI:http://localhost:8080/realms/your-realm}
+           jwk-set-uri: ${jwtk-set-uri:http://localhost:8080/realms/your-realm/protocol/openid-connect/certs}
+
 logging:
   level:
-    org:
-      springframework:
-        security=TRACE:
+    org.springframework.security: INFO
+
 domeni:
   security:
     jwt:
