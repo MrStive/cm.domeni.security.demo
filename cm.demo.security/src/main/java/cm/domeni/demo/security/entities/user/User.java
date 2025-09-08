@@ -1,5 +1,6 @@
-package cm.domeni.demo.security.entities;
+package cm.domeni.demo.security.entities.user;
 
+import cm.domeni.demo.security.entities.role.AppRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ import java.util.function.Predicate;
 @Getter
 @Builder
 @Setter
-public class AppUser {
+public class User {
     @Id
     @Column(name = "c_id")
     @Builder.Default
@@ -38,6 +39,14 @@ public class AppUser {
     @Column(name = "c_password")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    @Column(name = "c_email")
+    private String email;
+    @Column(name = "c_firstname")
+    private String firstname;
+    @Column(name = "c_lastname")
+    private String lastname;
+    @Column(name = "c_enable")
+    private boolean enabled;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, targetEntity = AppRole.class)
     @JoinTable(
             name = "t_user_role",

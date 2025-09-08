@@ -1,8 +1,8 @@
 package cm.domeni.demo.security.repositories;
 
-import cm.domeni.demo.security.entities.AppRole;
-import cm.domeni.demo.security.entities.AppUser;
-import cm.domeni.demo.security.entities.UserRepository;
+import cm.domeni.demo.security.entities.role.AppRole;
+import cm.domeni.demo.security.entities.user.User;
+import cm.domeni.demo.security.entities.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -10,7 +10,7 @@ public class UserRepositoryImpl implements UserRepository {
    private final AppUserSpringRepository appUserSpringRepository;
    private final AppRoleSpringRepository appRoleSpringRepository;
     @Override
-    public void save(AppUser appUser) {
+    public void save(User appUser) {
         appUserSpringRepository.save(appUser);
     }
 

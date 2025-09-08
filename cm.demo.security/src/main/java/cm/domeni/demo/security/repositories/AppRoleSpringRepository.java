@@ -1,6 +1,6 @@
 package cm.domeni.demo.security.repositories;
 
-import cm.domeni.demo.security.entities.AppRole;
+import cm.domeni.demo.security.entities.role.AppRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
